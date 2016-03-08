@@ -38,3 +38,18 @@ TEST_CASE( "Change a snake's direction", "[snake]" ) {
 
     REQUIRE( snake.position() == Point2D<int>(1, 1) );
 }
+
+TEST_CASE( "A snake can't go in the direction it last moved in", "[snake]" ) {
+
+    Snake snake {{0, 0}, Direction::right};
+
+    snake.face(Direction::left);
+    snake.move();
+
+    REQUIRE( snake.position() == Point2D<int>(1, 0) );
+
+    snake.face(Direction::left);
+    snake.move();
+
+    REQUIRE( snake.position() == Point2D<int>(2, 0) );
+}

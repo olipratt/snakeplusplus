@@ -10,7 +10,7 @@ CC = D:\Programs\mingw\bin\g++.exe
 
 #INCLUDE_PATHS specifies the additional include paths we'll need
 INCLUDE_PATHS = -ID:\Programs\SDL\SDL2-devel-2.0.4-mingw\SDL2-2.0.4\i686-w64-mingw32\include\SDL2 \
-                -ID:\Programming\C++\test_program
+                -ID:\Programming\C++\snake
 
 #LIBRARY_PATHS specifies the additional library paths we'll need
 LIBRARY_PATHS = -LD:\Programs\SDL\SDL2-devel-2.0.4-mingw\SDL2-2.0.4\i686-w64-mingw32\lib

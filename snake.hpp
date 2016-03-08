@@ -1,21 +1,24 @@
 
+#include <point2d.hpp>
 
 enum class Direction { up, down, left, right };
+
+Point2D<int> direction_unit_vector(Direction);
 
 class Screen;
 
 class Snake {
 private:
-  int x_pos;
-  int y_pos;
-  Direction direction;
-
-  const int width {25};
-  const int height {25};
+  Point2D<int> position_;
+  Direction direction_;
 
 public:
-  Snake(int x, int y, Direction dir) : x_pos{x}, y_pos{y}, direction{dir} {}
+  Snake(const Point2D<int> &pos, Direction dir) : position_{pos}, direction_{dir} {}
+
+  Point2D<int> position() const { return position_; }
+
+  void move();
+  void face(Direction dir);
 
   void draw(Screen *screen);
 };
-

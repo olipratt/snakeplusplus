@@ -48,4 +48,5 @@ void Snake::face(Direction dir)
 void Snake::move()
 {
   position_ = position_ + direction_unit_vector(direction_);
+  last_moved_direction_ = direction_;
 }

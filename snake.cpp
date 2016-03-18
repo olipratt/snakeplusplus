@@ -1,3 +1,5 @@
+
+#include <exception>
 #include <stdexcept>
 
 #include <snake.hpp>
@@ -47,6 +49,25 @@ void Snake::face(Direction dir)
 
 void Snake::move()
 {
-  position_ = position_ + direction_unit_vector(direction_);
+  auto new_position = position_ + direction_unit_vector(direction_);
+  if (!grid_->contains(new_position))
+  {
+    throw std::runtime_error("Tried to move out of bounds");
+  }
+
+  if (grid_->fruit_at(new_position))
+  {
+    grid_->remove_fruit(new_position);
+    grow();
+  }
+
+  position_ = new_position;
   last_moved_direction_ = direction_;
+}
+
+void Snake::grow()
+{
+  ++length_;
+
+  body_locations_.push_back(position_);
 }

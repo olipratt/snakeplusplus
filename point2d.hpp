@@ -1,3 +1,5 @@
+#ifndef POINT2DHPPINCLUDED
+#define POINT2DHPPINCLUDED
 #include <ostream>
 
 template<typename T>
@@ -25,4 +27,4 @@ private:
   T y_pos;
 };
 
-
+#endif

@@ -58,16 +58,31 @@ void Snake::move()
   if (grid_->fruit_at(new_position))
   {
     grid_->remove_fruit(new_position);
-    grow();
+    grow_body();
+  }
+  else
+  {
+    move_body();
+  }
+
+  if (body_occupies(new_position))
+  {
+    throw std::runtime_error("Tried to move into own body");
   }
 
   position_ = new_position;
   last_moved_direction_ = direction_;
 }
 
-void Snake::grow()
+void Snake::grow_body()
 {
   ++length_;
 
-  body_locations_.push_back(position_);
+  body_locations_.push_front(position_);
+}
+
+void Snake::move_body()
+{
+  body_locations_.push_front(position());
+  body_locations_.pop_back();
 }

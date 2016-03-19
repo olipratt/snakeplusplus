@@ -16,11 +16,10 @@ public:
   constexpr bool operator==(const Point2D<T> &other) const {
     return x() == other.x() && y() == other.y(); }
 
-  std::ostream& operator << (std::ostream& os) const {
-    os << "Point2D(" << x() << ", " << y() << ")";
+  friend std::ostream& operator << (std::ostream& os, const Point2D<T> &point) {
+    os << "Point2D(" << point.x() << ", " << point.y() << ")";
     return os;
   }
-
 
 private:
   T x_pos;

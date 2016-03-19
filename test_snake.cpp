@@ -5,14 +5,15 @@
 
 #include <catch.hpp>
 
+#include <location_source.hpp>
 #include <grid.hpp>
 #include <snake.hpp>
 
 
-
 TEST_CASE( "Create a snake", "[snake]" ) {
 
-  Grid grid {3, 3};
+  LocationSource location_source;
+  Grid grid {3, 3, &location_source};
   Snake snake {&grid, {0, 0}, Direction::right};
 
   REQUIRE( snake.position() == Point2D<int>(0, 0) );
@@ -20,7 +21,8 @@ TEST_CASE( "Create a snake", "[snake]" ) {
 
 TEST_CASE( "Snake movements", "[snake]" ) {
 
-  Grid grid {3, 3};
+  LocationSource location_source;
+  Grid grid {3, 3, &location_source};
   Snake snake {&grid, {0, 0}, Direction::right};
 
   SECTION( "Basic movement" )
@@ -71,7 +73,8 @@ TEST_CASE( "Snake movements", "[snake]" ) {
 
 TEST_CASE( "A snake shouldn't be able to go outside the grid", "[snake]" ) {
 
-  Grid grid {3, 3};
+  LocationSource location_source;
+  Grid grid {3, 3, &location_source};
   Snake snake {&grid, {0, 0}, Direction::right};
 
   SECTION( "A snake can't go outside the grid in the positive direction" )
@@ -91,9 +94,14 @@ TEST_CASE( "A snake shouldn't be able to go outside the grid", "[snake]" ) {
 
 TEST_CASE( "A snake can grow as it moves", "[snake]" ) {
 
-  Grid grid {3, 3};
+  LocationSource location_source;
+  Grid grid {3, 3, &location_source};
   Snake snake {&grid, {0, 0}, Direction::right};
+
   grid.place_fruit({1, 0});
+  location_source.add_location({1, 1});
+  location_source.add_location({0, 1});
+  location_source.add_location({2, 2});
 
   SECTION( "A snake can eat a fruit to grow" )
   {
@@ -104,5 +112,133 @@ TEST_CASE( "A snake can grow as it moves", "[snake]" ) {
     REQUIRE( snake.occupies({1, 0}) );
 
     REQUIRE_FALSE( grid.fruit_at({1, 0}) );
+  }
+  SECTION( "A snake that has grown takes its body with it" )
+  {
+    snake.move();
+
+    REQUIRE( snake.length() == 2 );
+    REQUIRE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+
+    REQUIRE_FALSE( grid.fruit_at({1, 0}) );
+
+    snake.move();
+
+    REQUIRE( snake.length() == 2 );
+    REQUIRE_FALSE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+    REQUIRE( snake.occupies({2, 0}) );
+  }
+  SECTION( "A snake can chase its own tail safely" )
+  {
+    snake.move();
+
+    REQUIRE( snake.length() == 2 );
+    REQUIRE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+
+    REQUIRE_FALSE( grid.fruit_at({1, 0}) );
+
+    snake.face(Direction::down);
+    snake.move();
+
+    REQUIRE( snake.length() == 3 );
+    REQUIRE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+    REQUIRE( snake.occupies({1, 1}) );
+
+    REQUIRE_FALSE( grid.fruit_at({1, 1}) );
+
+    snake.face(Direction::left);
+    snake.move();
+
+    REQUIRE( snake.length() == 4 );
+    REQUIRE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+    REQUIRE( snake.occupies({1, 1}) );
+    REQUIRE( snake.occupies({0, 1}) );
+
+    REQUIRE_FALSE( grid.fruit_at({0, 1}) );
+
+    snake.face(Direction::up);
+    snake.move();
+
+    REQUIRE( snake.length() == 4 );
+    REQUIRE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+    REQUIRE( snake.occupies({1, 1}) );
+    REQUIRE( snake.occupies({0, 1}) );
+
+    snake.face(Direction::right);
+    snake.move();
+
+    REQUIRE( snake.length() == 4 );
+    REQUIRE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+    REQUIRE( snake.occupies({1, 1}) );
+    REQUIRE( snake.occupies({0, 1}) );
+  }
+}
+
+TEST_CASE( "A snake dies if it eats its own body", "[snake]" ) {
+
+  LocationSource location_source;
+  Grid grid {3, 3, &location_source};
+  Snake snake {&grid, {0, 0}, Direction::right};
+
+  grid.place_fruit({1, 0});
+  location_source.add_location({2, 0});
+  location_source.add_location({2, 1});
+  location_source.add_location({1, 1});
+
+  SECTION( "A snake can eat a fruit to grow" )
+  {
+    snake.move();
+
+    REQUIRE( snake.length() == 2 );
+    REQUIRE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+
+    REQUIRE( grid.fruit_at({2, 0}) );
+    REQUIRE_FALSE( grid.fruit_at({1, 0}) );
+
+    snake.move();
+
+    REQUIRE( snake.length() == 3 );
+    REQUIRE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+    REQUIRE( snake.occupies({2, 0}) );
+
+    REQUIRE( grid.fruit_at({2, 1}) );
+    REQUIRE_FALSE( grid.fruit_at({2, 0}) );
+
+    snake.face(Direction::down);
+    snake.move();
+
+    REQUIRE( snake.length() == 4 );
+    REQUIRE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+    REQUIRE( snake.occupies({2, 0}) );
+    REQUIRE( snake.occupies({2, 1}) );
+
+    REQUIRE( grid.fruit_at({1, 1}) );
+    REQUIRE_FALSE( grid.fruit_at({2, 1}) );
+
+    snake.face(Direction::left);
+    snake.move();
+
+    REQUIRE( snake.length() == 5 );
+    REQUIRE( snake.occupies({0, 0}) );
+    REQUIRE( snake.occupies({1, 0}) );
+    REQUIRE( snake.occupies({2, 0}) );
+    REQUIRE( snake.occupies({2, 1}) );
+    REQUIRE( snake.occupies({1, 1}) );
+
+    REQUIRE_FALSE( grid.fruit_at({1, 1}) );
+
+    snake.face(Direction::up);
+
+    REQUIRE_THROWS_AS( snake.move(), std::runtime_error );
   }
 }

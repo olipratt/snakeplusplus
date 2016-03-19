@@ -15,7 +15,8 @@
 class Grid
 {
 public:
-  Grid(int width, int height) : width_{width}, height_{height} {}
+  Grid(int width, int height, LocationSource *location_source) :
+    width_{width}, height_{height}, location_source_{location_source} {}
 
   bool contains(const Point2D<int> &point) const {
     return ((point.x() < width_) && (point.x() >= 0) &&
@@ -32,6 +33,8 @@ public:
     fruit_locations_.erase(std::find(fruit_locations_.begin(),
                                      fruit_locations_.end(),
                                      point));
+
+    place_fruit(location_source_->next_location());
   }
 
   bool fruit_at(const Point2D<int> &point) const {
@@ -43,6 +46,7 @@ public:
 private:
   int width_;
   int height_;
+  LocationSource *location_source_;
   std::vector<Point2D<int> > fruit_locations_;
 };
 

@@ -3,7 +3,10 @@
 #OBJS specifies which files to compile as part of the project
 SNAKE_OBJS = main.cpp
 
-TEST_OBJS = unit_test_main.cpp snake.cpp test_snake.cpp location_source.cpp
+TEST_OBJS = unit_test_main.cpp \
+			snake.cpp \
+			test_snake.cpp \
+			location_source.cpp
 
 #CC specifies which compiler we're using
 CC = D:\Programs\mingw\bin\g++.exe

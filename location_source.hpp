@@ -20,7 +20,7 @@ public:
 private:
   Point2D<int> new_random_location();
 
-  std::queue<Point2D<int> > locations_;
+  std::queue<Point2D<int>> locations_;
 };
 
 #endif

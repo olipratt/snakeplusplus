@@ -5,13 +5,9 @@
 #include <list>
 
 #include <point2d.hpp>
+#include <direction.hpp>
 #include <location_source.hpp>
 #include <grid.hpp>
-
-enum class Direction { up, down, left, right };
-
-Point2D<int> direction_unit_vector(Direction);
-Direction direction_opposite(Direction);
 
 //class Screen;
 
@@ -22,7 +18,7 @@ private:
   Direction direction_;
   Direction last_moved_direction_;
   int length_{1};
-  std::list<Point2D<int> > body_locations_;
+  std::list<Point2D<int>> body_locations_;
 
   void grow_body();
   void move_body();

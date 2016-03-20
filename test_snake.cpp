@@ -192,7 +192,7 @@ TEST_CASE( "A snake dies if it eats its own body", "[snake]" )
   location_source.add_location({2, 1});
   location_source.add_location({1, 1});
 
-  SECTION( "A snake can eat a fruit to grow" )
+  SECTION( "A snake dies if it eats its own body" )
   {
     snake.move();
 
@@ -240,5 +240,29 @@ TEST_CASE( "A snake dies if it eats its own body", "[snake]" )
     snake.face(Direction::up);
 
     REQUIRE_THROWS_AS( snake.move(), std::runtime_error );
+  }
+}
+
+TEST_CASE( "An error is raised when there are no locations left", "[snake]" )
+{
+  LocationSource location_source {2, 2};
+  FruitManager fruit_manager {2, 2, &location_source};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
+
+  fruit_manager.place_fruit({1, 0});
+  location_source.add_location({1, 1});
+  location_source.add_location({0, 1});
+
+  SECTION( "An error is raised when there are no locations left" )
+  {
+    snake.move();
+    REQUIRE( snake.length() == 2 );
+
+    snake.face(Direction::down);
+    snake.move();
+    REQUIRE( snake.length() == 3 );
+
+    snake.face(Direction::left);
+    REQUIRE_THROWS_AS( snake.move(), no_available_locations_error);
   }
 }

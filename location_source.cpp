@@ -5,24 +5,16 @@
 
 #include <location_source.hpp>
 
-Point2D<int> LocationSource::new_random_location() const
+Point2D<int> LocationSource::new_random_location()
 {
-  std::default_random_engine generator;
   std::uniform_int_distribution<int> distribution_width(0, width_);
   std::uniform_int_distribution<int> distribution_height(0, height_);
-  Point2D<int> point{0, 0};
 
-  do
-  {
-    point = Point2D<int> {distribution_width(generator),
-                          distribution_height(generator)};
-  }
-  while(location_unavailable(point));
-
-  return point;
+  return Point2D<int> {distribution_width(generator),
+                       distribution_height(generator)};
 }
 
-Point2D<int> LocationSource::next_location()
+Point2D<int> LocationSource::generate_new_location()
 {
   if (locations_.empty())
   {
@@ -34,6 +26,24 @@ Point2D<int> LocationSource::next_location()
     locations_.pop();
     return new_location;
   }
+}
+
+Point2D<int> LocationSource::next_location()
+{
+  Point2D<int> point{0, 0};
+
+  if (unavailable_locations_.size() == (width_ * height_))
+  {
+    throw no_available_locations_error();
+  }
+
+  do
+  {
+    point = generate_new_location();
+  }
+  while(location_unavailable(point));
+
+  return point;
 }
 
 void LocationSource::add_location(Point2D<int> new_location)

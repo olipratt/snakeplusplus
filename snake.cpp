@@ -27,7 +27,7 @@ void Snake::move()
   // Otherwise, its body just moves forward.
   if (fruit_manager_->fruit_at(new_position))
   {
-    fruit_manager_->remove_fruit(new_position);
+    fruit_manager_->consume_fruit(new_position);
     grow_body();
   }
   else

@@ -14,8 +14,7 @@
 
 class no_available_locations_error : public std::runtime_error
 {
-public:
-  no_available_locations_error(): runtime_error("No available locations") {}
+  using runtime_error::runtime_error;
 };
 
 class LocationSource
@@ -34,7 +33,7 @@ public:
   Point2D<int> next_location();
   void add_location(Point2D<int>);
 
-  void take(Point2D<int> point) { unavailable_locations_.push_back(point); };
+  void take(Point2D<int> point);
   void give_back(Point2D<int>);
 
 private:

@@ -13,7 +13,7 @@
 TEST_CASE( "Create a snake", "[snake]" )
 {
   LocationSource location_source {3, 3};
-  FruitManager fruit_manager {3, 3, &location_source};
+  FruitManager fruit_manager {&location_source};
   Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
   REQUIRE( snake.head_position() == Point2D<int>(0, 0) );
@@ -22,7 +22,7 @@ TEST_CASE( "Create a snake", "[snake]" )
 TEST_CASE( "Snake movements", "[snake]" )
 {
   LocationSource location_source {3, 3};
-  FruitManager fruit_manager {3, 3, &location_source};
+  FruitManager fruit_manager {&location_source};
   Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
   SECTION( "Basic movement" )
@@ -74,7 +74,7 @@ TEST_CASE( "Snake movements", "[snake]" )
 TEST_CASE( "A snake shouldn't be able to go outside the grid", "[snake]" )
 {
   LocationSource location_source {3, 3};
-  FruitManager fruit_manager {3, 3, &location_source};
+  FruitManager fruit_manager {&location_source};
   Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
   SECTION( "A snake can't go outside the grid in the positive direction" )
@@ -95,7 +95,7 @@ TEST_CASE( "A snake shouldn't be able to go outside the grid", "[snake]" )
 TEST_CASE( "A snake can grow as it moves", "[snake]" )
 {
   LocationSource location_source {3, 3};
-  FruitManager fruit_manager {3, 3, &location_source};
+  FruitManager fruit_manager {&location_source};
   Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
   fruit_manager.place_fruit({1, 0});
@@ -184,7 +184,7 @@ TEST_CASE( "A snake can grow as it moves", "[snake]" )
 TEST_CASE( "A snake dies if it eats its own body", "[snake]" )
 {
   LocationSource location_source {3, 3};
-  FruitManager fruit_manager {3, 3, &location_source};
+  FruitManager fruit_manager {&location_source};
   Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
   fruit_manager.place_fruit({1, 0});
@@ -246,7 +246,7 @@ TEST_CASE( "A snake dies if it eats its own body", "[snake]" )
 TEST_CASE( "An error is raised when there are no locations left", "[snake]" )
 {
   LocationSource location_source {2, 2};
-  FruitManager fruit_manager {2, 2, &location_source};
+  FruitManager fruit_manager {&location_source};
   Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
   fruit_manager.place_fruit({1, 0});

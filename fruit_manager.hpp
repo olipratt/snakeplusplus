@@ -15,8 +15,8 @@
 class FruitManager
 {
 public:
-  FruitManager(int width, int height, LocationSource *location_source) :
-    width_{width}, height_{height}, location_source_{location_source} {}
+  FruitManager(LocationSource *location_source) :
+    location_source_{location_source} {}
 
   void place_fruit(const Point2D<int> point) {
     assert(!fruit_at(point));
@@ -38,10 +38,8 @@ public:
   }
 
 private:
-  int width_;
-  int height_;
   LocationSource *location_source_;
-  std::vector<Point2D<int> > fruit_locations_;
+  std::vector<Point2D<int>> fruit_locations_;
 
   void remove_fruit(const Point2D<int> &point) {
     assert(fruit_at(point));

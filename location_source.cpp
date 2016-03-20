@@ -34,7 +34,7 @@ Point2D<int> LocationSource::next_location()
 
   if (unavailable_locations_.size() == (width_ * height_))
   {
-    throw no_available_locations_error();
+    throw no_available_locations_error("All locations unavailable");
   }
 
   do
@@ -56,6 +56,12 @@ bool LocationSource::location_unavailable(const Point2D<int> &location) const
   return std::find(unavailable_locations_.begin(),
                    unavailable_locations_.end(),
                    location) != unavailable_locations_.end();
+}
+
+void LocationSource::take(Point2D<int> new_location)
+{
+  assert(!location_unavailable(new_location));
+  unavailable_locations_.push_back(new_location);
 }
 
 void LocationSource::give_back(Point2D<int> point)

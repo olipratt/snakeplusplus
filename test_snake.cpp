@@ -6,76 +6,76 @@
 #include <catch.hpp>
 
 #include <location_source.hpp>
-#include <grid.hpp>
+#include <fruit_manager.hpp>
 #include <snake.hpp>
 
 
-TEST_CASE( "Create a snake", "[snake]" ) {
+TEST_CASE( "Create a snake", "[snake]" )
+{
+  LocationSource location_source {3, 3};
+  FruitManager fruit_manager {3, 3, &location_source};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
-  LocationSource location_source;
-  Grid grid {3, 3, &location_source};
-  Snake snake {&grid, {0, 0}, Direction::right};
-
-  REQUIRE( snake.position() == Point2D<int>(0, 0) );
+  REQUIRE( snake.head_position() == Point2D<int>(0, 0) );
 }
 
-TEST_CASE( "Snake movements", "[snake]" ) {
-
-  LocationSource location_source;
-  Grid grid {3, 3, &location_source};
-  Snake snake {&grid, {0, 0}, Direction::right};
+TEST_CASE( "Snake movements", "[snake]" )
+{
+  LocationSource location_source {3, 3};
+  FruitManager fruit_manager {3, 3, &location_source};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
   SECTION( "Basic movement" )
   {
     snake.move();
 
-    REQUIRE( snake.position() == Point2D<int>(1, 0) );
+    REQUIRE( snake.head_position() == Point2D<int>(1, 0) );
 
     snake.move();
 
-    REQUIRE( snake.position() == Point2D<int>(2, 0) );
+    REQUIRE( snake.head_position() == Point2D<int>(2, 0) );
   }
   SECTION( "Change a snake's direction" )
   {
     snake.face(Direction::down);
     snake.move();
 
-    REQUIRE( snake.position() == Point2D<int>(0, 1) );
+    REQUIRE( snake.head_position() == Point2D<int>(0, 1) );
 
     snake.face(Direction::right);
     snake.move();
 
-    REQUIRE( snake.position() == Point2D<int>(1, 1) );
+    REQUIRE( snake.head_position() == Point2D<int>(1, 1) );
   }
   SECTION( "A snake can't go in the direction it last moved in" )
   {
     snake.face(Direction::left);
     snake.move();
 
-    REQUIRE( snake.position() == Point2D<int>(1, 0) );
+    REQUIRE( snake.head_position() == Point2D<int>(1, 0) );
 
     snake.face(Direction::left);
     snake.move();
 
-    REQUIRE( snake.position() == Point2D<int>(2, 0) );
+    REQUIRE( snake.head_position() == Point2D<int>(2, 0) );
 
     snake.face(Direction::down);
     snake.move();
 
-    REQUIRE( snake.position() == Point2D<int>(2, 1) );
+    REQUIRE( snake.head_position() == Point2D<int>(2, 1) );
 
     snake.face(Direction::up);
     snake.move();
 
-    REQUIRE( snake.position() == Point2D<int>(2, 2) );
+    REQUIRE( snake.head_position() == Point2D<int>(2, 2) );
   }
 }
 
-TEST_CASE( "A snake shouldn't be able to go outside the grid", "[snake]" ) {
-
-  LocationSource location_source;
-  Grid grid {3, 3, &location_source};
-  Snake snake {&grid, {0, 0}, Direction::right};
+TEST_CASE( "A snake shouldn't be able to go outside the grid", "[snake]" )
+{
+  LocationSource location_source {3, 3};
+  FruitManager fruit_manager {3, 3, &location_source};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
   SECTION( "A snake can't go outside the grid in the positive direction" )
   {
@@ -92,13 +92,13 @@ TEST_CASE( "A snake shouldn't be able to go outside the grid", "[snake]" ) {
   }
 }
 
-TEST_CASE( "A snake can grow as it moves", "[snake]" ) {
+TEST_CASE( "A snake can grow as it moves", "[snake]" )
+{
+  LocationSource location_source {3, 3};
+  FruitManager fruit_manager {3, 3, &location_source};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
-  LocationSource location_source;
-  Grid grid {3, 3, &location_source};
-  Snake snake {&grid, {0, 0}, Direction::right};
-
-  grid.place_fruit({1, 0});
+  fruit_manager.place_fruit({1, 0});
   location_source.add_location({1, 1});
   location_source.add_location({0, 1});
   location_source.add_location({2, 2});
@@ -111,7 +111,7 @@ TEST_CASE( "A snake can grow as it moves", "[snake]" ) {
     REQUIRE( snake.occupies({0, 0}) );
     REQUIRE( snake.occupies({1, 0}) );
 
-    REQUIRE_FALSE( grid.fruit_at({1, 0}) );
+    REQUIRE_FALSE( fruit_manager.fruit_at({1, 0}) );
   }
   SECTION( "A snake that has grown takes its body with it" )
   {
@@ -121,7 +121,7 @@ TEST_CASE( "A snake can grow as it moves", "[snake]" ) {
     REQUIRE( snake.occupies({0, 0}) );
     REQUIRE( snake.occupies({1, 0}) );
 
-    REQUIRE_FALSE( grid.fruit_at({1, 0}) );
+    REQUIRE_FALSE( fruit_manager.fruit_at({1, 0}) );
 
     snake.move();
 
@@ -138,7 +138,7 @@ TEST_CASE( "A snake can grow as it moves", "[snake]" ) {
     REQUIRE( snake.occupies({0, 0}) );
     REQUIRE( snake.occupies({1, 0}) );
 
-    REQUIRE_FALSE( grid.fruit_at({1, 0}) );
+    REQUIRE_FALSE( fruit_manager.fruit_at({1, 0}) );
 
     snake.face(Direction::down);
     snake.move();
@@ -148,7 +148,7 @@ TEST_CASE( "A snake can grow as it moves", "[snake]" ) {
     REQUIRE( snake.occupies({1, 0}) );
     REQUIRE( snake.occupies({1, 1}) );
 
-    REQUIRE_FALSE( grid.fruit_at({1, 1}) );
+    REQUIRE_FALSE( fruit_manager.fruit_at({1, 1}) );
 
     snake.face(Direction::left);
     snake.move();
@@ -159,7 +159,7 @@ TEST_CASE( "A snake can grow as it moves", "[snake]" ) {
     REQUIRE( snake.occupies({1, 1}) );
     REQUIRE( snake.occupies({0, 1}) );
 
-    REQUIRE_FALSE( grid.fruit_at({0, 1}) );
+    REQUIRE_FALSE( fruit_manager.fruit_at({0, 1}) );
 
     snake.face(Direction::up);
     snake.move();
@@ -181,13 +181,13 @@ TEST_CASE( "A snake can grow as it moves", "[snake]" ) {
   }
 }
 
-TEST_CASE( "A snake dies if it eats its own body", "[snake]" ) {
+TEST_CASE( "A snake dies if it eats its own body", "[snake]" )
+{
+  LocationSource location_source {3, 3};
+  FruitManager fruit_manager {3, 3, &location_source};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
 
-  LocationSource location_source;
-  Grid grid {3, 3, &location_source};
-  Snake snake {&grid, {0, 0}, Direction::right};
-
-  grid.place_fruit({1, 0});
+  fruit_manager.place_fruit({1, 0});
   location_source.add_location({2, 0});
   location_source.add_location({2, 1});
   location_source.add_location({1, 1});
@@ -200,8 +200,8 @@ TEST_CASE( "A snake dies if it eats its own body", "[snake]" ) {
     REQUIRE( snake.occupies({0, 0}) );
     REQUIRE( snake.occupies({1, 0}) );
 
-    REQUIRE( grid.fruit_at({2, 0}) );
-    REQUIRE_FALSE( grid.fruit_at({1, 0}) );
+    REQUIRE( fruit_manager.fruit_at({2, 0}) );
+    REQUIRE_FALSE( fruit_manager.fruit_at({1, 0}) );
 
     snake.move();
 
@@ -210,8 +210,8 @@ TEST_CASE( "A snake dies if it eats its own body", "[snake]" ) {
     REQUIRE( snake.occupies({1, 0}) );
     REQUIRE( snake.occupies({2, 0}) );
 
-    REQUIRE( grid.fruit_at({2, 1}) );
-    REQUIRE_FALSE( grid.fruit_at({2, 0}) );
+    REQUIRE( fruit_manager.fruit_at({2, 1}) );
+    REQUIRE_FALSE( fruit_manager.fruit_at({2, 0}) );
 
     snake.face(Direction::down);
     snake.move();
@@ -222,8 +222,8 @@ TEST_CASE( "A snake dies if it eats its own body", "[snake]" ) {
     REQUIRE( snake.occupies({2, 0}) );
     REQUIRE( snake.occupies({2, 1}) );
 
-    REQUIRE( grid.fruit_at({1, 1}) );
-    REQUIRE_FALSE( grid.fruit_at({2, 1}) );
+    REQUIRE( fruit_manager.fruit_at({1, 1}) );
+    REQUIRE_FALSE( fruit_manager.fruit_at({2, 1}) );
 
     snake.face(Direction::left);
     snake.move();
@@ -235,7 +235,7 @@ TEST_CASE( "A snake dies if it eats its own body", "[snake]" ) {
     REQUIRE( snake.occupies({2, 1}) );
     REQUIRE( snake.occupies({1, 1}) );
 
-    REQUIRE_FALSE( grid.fruit_at({1, 1}) );
+    REQUIRE_FALSE( fruit_manager.fruit_at({1, 1}) );
 
     snake.face(Direction::up);
 

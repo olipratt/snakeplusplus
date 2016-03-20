@@ -12,16 +12,11 @@
 #include <point2d.hpp>
 
 
-class Grid
+class FruitManager
 {
 public:
-  Grid(int width, int height, LocationSource *location_source) :
+  FruitManager(int width, int height, LocationSource *location_source) :
     width_{width}, height_{height}, location_source_{location_source} {}
-
-  bool contains(const Point2D<int> &point) const {
-    return ((point.x() < width_) && (point.x() >= 0) &&
-            (point.y() < height_) && (point.y() >= 0));
-  }
 
   void place_fruit(const Point2D<int> point) {
     assert(!fruit_at(point));

@@ -21,7 +21,7 @@ LIBRARY_PATHS = -LD:\Programs\SDL\SDL2-devel-2.0.4-mingw\SDL2-2.0.4\i686-w64-min
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
 # -Wl,-subsystem,windows gets rid of the console window
-COMPILER_FLAGS = -Wall -Wl,-subsystem,windows -std=c++11 -Wno-unknown-pragmas
+COMPILER_FLAGS = -Wall -Wl,-subsystem,windows -std=c++11 -Wno-unknown-pragmas -Og
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lmingw32 -lSDL2main -lSDL2

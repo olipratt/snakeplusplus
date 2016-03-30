@@ -1,14 +1,17 @@
 # MAke file for Snake.
 
 #OBJS specifies which files to compile as part of the project
-SNAKE_OBJS = main.cpp
-
-TEST_OBJS = unit_test_main.cpp \
-			snake.cpp \
+COMMON_OBJS = snake.cpp \
 			snake_scene.cpp \
-			test_snake.cpp \
-			test_snake_scene.cpp \
 			location_source.cpp
+
+SNAKE_OBJS = $(COMMON_OBJS) \
+			main.cpp
+
+TEST_OBJS = $(COMMON_OBJS) \
+			unit_test_main.cpp \
+			test_snake.cpp \
+			test_snake_scene.cpp
 
 #CC specifies which compiler we're using
 CC = D:\Programs\mingw\bin\g++.exe
@@ -37,8 +40,8 @@ snake : $(SNAKE_OBJS)
 	$(CC) $(SNAKE_OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) \
 	$(LINKER_FLAGS) -o $(SNAKE_OBJ_NAME)
 
-
 unit_tests : $(TEST_OBJS)
 	$(CC) $(TEST_OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) \
 	$(LINKER_FLAGS) -o $(TEST_OBJ_NAME)
 
+.DEFAULT_GOAL := snake

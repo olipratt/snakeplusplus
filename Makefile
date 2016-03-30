@@ -5,6 +5,7 @@ SNAKE_OBJS = main.cpp
 
 TEST_OBJS = unit_test_main.cpp \
 			snake.cpp \
+			snake_scene.cpp \
 			test_snake.cpp \
 			test_snake_scene.cpp \
 			location_source.cpp

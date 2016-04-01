@@ -23,6 +23,9 @@ public:
   LocationSource(unsigned int width, unsigned int height) :
     width_{width}, height_{height}, locations_{}, unavailable_locations_{} {}
 
+  unsigned int width() { return width_; }
+  unsigned int height() { return height_; }
+
   bool contains(const Point2D<int> &point) const {
     return ((point.x() >= 0) &&
             (static_cast<unsigned int>(point.x()) < width_) &&

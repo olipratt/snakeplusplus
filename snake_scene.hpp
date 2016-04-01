@@ -19,11 +19,12 @@ public:
     location_source_{width, height}, fruit_manager_{&location_source_},
     snake_{&fruit_manager_, &location_source_, {0, 0}, Direction::right},
     ticks_per_move_{ticks_per_move}
-    {}
+    { fruit_manager_.place_fruit({static_cast<int>(width / 2),
+                                  static_cast<int>(height / 2)}); }
 
   void update(int elapsed_ticks);
   void queue_event(SceneEvent event) { event_queue_.push(event); }
-  void draw(Window *window);
+  void draw(Window *window) const;
 
 private:
   LocationSource location_source_;

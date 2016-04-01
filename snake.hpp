@@ -8,8 +8,8 @@
 #include <direction.hpp>
 #include <location_source.hpp>
 #include <fruit_manager.hpp>
+#include <window.hpp>
 
-//class Screen;
 
 class Snake {
 public:
@@ -28,7 +28,7 @@ public:
   void move();
   void face(Direction dir);
 
-  //void draw(Screen *screen);
+  void draw(Window *window) const;
 
 private:
   FruitManager *fruit_manager_;

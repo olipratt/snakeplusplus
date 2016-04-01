@@ -7,8 +7,8 @@
 
 Point2D<int> LocationSource::new_random_location()
 {
-  std::uniform_int_distribution<int> distribution_width(0, width_);
-  std::uniform_int_distribution<int> distribution_height(0, height_);
+  std::uniform_int_distribution<int> distribution_width(0, width_ - 1);
+  std::uniform_int_distribution<int> distribution_height(0, height_ - 1);
 
   return Point2D<int> {distribution_width(generator),
                        distribution_height(generator)};

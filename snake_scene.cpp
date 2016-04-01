@@ -47,15 +47,16 @@ void SnakeScene::process_event_queue()
   }
 }
 
-void SnakeScene::draw(Window *window)
+void SnakeScene::draw(Window *window) const
 {
   // Clear the screen first.
   window->draw_filled_rect(0, 0, window->width(), window->height(),
                            0x00, 0xFF, 0x00, 0xFF);
 
-
   // Now draw the fruits.
+  fruit_manager_.draw(window);
 
   // Finally draw the snake itself.
+  snake_.draw(window);
 
 }

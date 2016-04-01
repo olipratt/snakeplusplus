@@ -9,8 +9,8 @@ public:
   Window(const char *name, int width, int height);
   ~Window();
 
-  int width() { return width_; }
-  int height() { return height_; }
+  int width() const { return width_; }
+  int height() const { return height_; }
 
   void update();
 

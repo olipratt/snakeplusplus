@@ -3,10 +3,12 @@
 #OBJS specifies which files to compile as part of the project
 COMMON_OBJS = snake.cpp \
 			snake_scene.cpp \
-			location_source.cpp
+			location_source.cpp \
+			window.cpp
 
 SNAKE_OBJS = $(COMMON_OBJS) \
-			main.cpp
+			main.cpp \
+			main_loop.cpp
 
 TEST_OBJS = $(COMMON_OBJS) \
 			unit_test_main.cpp \

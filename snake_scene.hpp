@@ -10,23 +10,28 @@
 #include <fruit_manager.hpp>
 #include <snake.hpp>
 #include <scene_event.hpp>
+#include <window.hpp>
 
 
 class SnakeScene {
 public:
-  SnakeScene(unsigned int width, unsigned int height) :
+  SnakeScene(unsigned int width, unsigned int height, int ticks_per_move) :
     location_source_{width, height}, fruit_manager_{&location_source_},
-    snake_{&fruit_manager_, &location_source_, {0, 0}, Direction::right}
+    snake_{&fruit_manager_, &location_source_, {0, 0}, Direction::right},
+    ticks_per_move_{ticks_per_move}
     {}
 
-  void update();
+  void update(int elapsed_ticks);
   void queue_event(SceneEvent event) { event_queue_.push(event); }
+  void draw(Window *window);
 
 private:
   LocationSource location_source_;
   FruitManager fruit_manager_;
   Snake snake_;
   std::queue<SceneEvent> event_queue_;
+  int ticks_per_move_;
+  int ticks_since_move_{0};
 
   void process_event_queue();
 };

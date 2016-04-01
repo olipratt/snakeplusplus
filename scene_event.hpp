@@ -2,6 +2,6 @@
 #define SCENEEVENTHPPINCLUDED
 
 
-enum class SceneEvent { Up, Down, Left, Right };
+enum class SceneEvent { up, down, left, right };
 
 #endif

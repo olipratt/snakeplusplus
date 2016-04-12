@@ -10,10 +10,12 @@
 #include <fruit_manager.hpp>
 #include <snake.hpp>
 #include <scene_event.hpp>
+#include <scene.hpp>
 #include <window.hpp>
 
 
-class SnakeScene {
+class SnakeScene: public Scene
+{
 public:
   SnakeScene(unsigned int width, unsigned int height, int ticks_per_move) :
     location_source_{width, height}, fruit_manager_{&location_source_},

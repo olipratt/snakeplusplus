@@ -13,7 +13,8 @@ SNAKE_OBJS = $(COMMON_OBJS) \
 TEST_OBJS = $(COMMON_OBJS) \
 			unit_test_main.cpp \
 			test_snake.cpp \
-			test_snake_scene.cpp
+			test_snake_scene.cpp \
+			test_scene_common.cpp
 
 #CC specifies which compiler we're using
 CC = D:\Programs\mingw\bin\g++.exe

@@ -69,7 +69,7 @@ void main_loop()
   // The window we'll be rendering to.
   Window window {SCREEN_NAME, SCREEN_WIDTH, SCREEN_HEIGHT};
 
-  SnakeScene snake_scene {3, 3, 1000};
+  SnakeScene snake_scene {4, 4, 750};
 
   int last_update_time = SDL_GetTicks();
   int this_update_time;

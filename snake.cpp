@@ -70,7 +70,7 @@ void Snake::draw(Window *window) const
   window->draw_filled_rect(head_position_.x() * segment_width,
                            head_position_.y() * segment_height,
                            segment_width, segment_height,
-                           0x7A, 0x52, 0x48, 0xFF);
+                           0x3D, 0x41, 0x24, 0xFF);
   for(const Point2D<int> &point : body_locations_)
   {
     window->draw_filled_rect(point.x() * segment_width,

@@ -16,39 +16,24 @@ Point2D<int> LocationSource::new_random_location()
 
 Point2D<int> LocationSource::generate_new_location()
 {
-  if (locations_.empty())
-  {
-    return new_random_location();
-  }
-  else
-  {
-    auto new_location = locations_.front();
-    locations_.pop();
-    return new_location;
-  }
+  return new_random_location();
 }
 
 Point2D<int> LocationSource::next_location()
 {
-  Point2D<int> point{0, 0};
-
-  if (unavailable_locations_.size() == (width_ * height_))
+  if (no_available_locations())
   {
     throw no_available_locations_error("All locations unavailable");
   }
 
-  do
+  auto point = generate_new_location();
+
+  while (location_unavailable(point))
   {
     point = generate_new_location();
   }
-  while(location_unavailable(point));
 
   return point;
-}
-
-void LocationSource::add_location(Point2D<int> new_location)
-{
-  locations_.push(new_location);
 }
 
 bool LocationSource::location_unavailable(const Point2D<int> &location) const
@@ -71,4 +56,23 @@ void LocationSource::give_back(Point2D<int> point)
                                    point);
   assert(locations_entry != unavailable_locations_.end());
   unavailable_locations_.erase(locations_entry);
+}
+
+void TestLocationSource::add_location(Point2D<int> new_location)
+{
+  locations_.push(new_location);
+}
+
+Point2D<int> TestLocationSource::generate_new_location()
+{
+  if (locations_.empty())
+  {
+    return LocationSource::generate_new_location();
+  }
+  else
+  {
+    auto new_location = locations_.front();
+    locations_.pop();
+    return new_location;
+  }
 }

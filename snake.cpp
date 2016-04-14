@@ -12,22 +12,24 @@ void Snake::face(Direction dir)
   }
 }
 
+Point2D<int> Snake::head_position_after_move() const
+{
+  return head_position() + direction_unit_vector(direction_);
+}
+
 void Snake::move()
 {
-  // This is the new position the head will be in after moving.
-  auto new_position = head_position() + direction_unit_vector(direction_);
-
   // If the snake tries to move outside the grid - that's an error.
-  if (!location_source_->contains(new_position))
+  if (!location_source_->contains(head_position_after_move()))
   {
     throw std::runtime_error("Tried to move out of bounds");
   }
 
   // If the snake moves on to a fruit, it eats the fruit and its body grows.
   // Otherwise, its body just moves forward.
-  if (fruit_manager_->fruit_at(new_position))
+  if (fruit_manager_->fruit_at(head_position_after_move()))
   {
-    fruit_manager_->consume_fruit(new_position);
+    fruit_manager_->consume_fruit(head_position_after_move());
     grow_body();
   }
   else
@@ -37,16 +39,13 @@ void Snake::move()
 
   // Now the body is in its new position, if the head would move into it, then
   // that's an error.
-  if (body_occupies(new_position))
+  if (body_occupies(head_position_after_move()))
   {
     throw std::runtime_error("Tried to move into own body");
   }
 
-  // Everything succeeded, move the head and update the last direction the
-  // snake moved in.
-  location_source_->take(new_position);
-  head_position_ = new_position;
-  last_moved_direction_ = direction_;
+  // Everything succeeded, move the head.
+  move_head();
 }
 
 void Snake::grow_body()
@@ -56,11 +55,24 @@ void Snake::grow_body()
   body_locations_.push_front(head_position());
 }
 
-void Snake::move_body()
+void Snake::shrink_tail()
 {
-  body_locations_.push_front(head_position());
   location_source_->give_back(body_locations_.back());
   body_locations_.pop_back();
+}
+
+void Snake::move_body()
+{
+  // Grow the body forwards, then shrink the tail end to achieve movement.
+  grow_body();
+  shrink_tail();
+}
+
+void Snake::move_head()
+{
+  head_position_ = head_position_after_move();
+  location_source_->take(head_position_);
+  last_moved_direction_ = direction_;
 }
 
 void Snake::draw(Window *window) const

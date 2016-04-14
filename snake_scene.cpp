@@ -7,9 +7,12 @@
 
 void SnakeScene::update(int elapsed_ticks)
 {
-  // Process events from the queue.
   process_event_queue();
+  process_ticks(elapsed_ticks);
+}
 
+void SnakeScene::process_ticks(int elapsed_ticks)
+{
   // If enough ticks have now passed, move the snake.
   ticks_since_move_ += elapsed_ticks;
   while (ticks_since_move_ >= ticks_per_move_)

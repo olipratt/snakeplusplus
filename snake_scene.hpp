@@ -37,6 +37,7 @@ private:
   int ticks_since_move_{0};
 
   void process_event_queue();
+  void process_ticks(int elapsed_ticks);
 };
 
 #endif

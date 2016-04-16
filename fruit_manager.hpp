@@ -12,13 +12,16 @@
 #include <point2d.hpp>
 
 #include <window.hpp>
+#include <renderapi.hpp>
 
 
 class FruitManager
 {
 public:
-  FruitManager(LocationSource *location_source) :
-    location_source_{location_source} {}
+  FruitManager(LocationSource *location_source, RendererFactory *render_fact)
+    : location_source_{location_source},
+      renderer_{render_fact->new_fruit_renderer()}
+    {}
 
   /** Place a new fruit at the given location. */
   void place_fruit(const Point2D<int> point) {
@@ -49,21 +52,20 @@ public:
   }
 
   /** Draw all the current fruit. */
-  void draw(Window *window) const {
-    unsigned int fruit_width = window->width() / location_source_->width();
-    unsigned int fruit_height = window->height() / location_source_->height();
+  void draw(Window *window) {
     for(const Point2D<int> &point : fruit_locations_)
     {
-      window->draw_filled_rect(point.x() * fruit_width,
-                               point.y() * fruit_height,
-                               fruit_width, fruit_height,
-                               0xFF, 0x00, 0x00, 0xFF);
+      renderer_->draw(window,
+                      point,
+                      location_source_->width(),
+                      location_source_->height());
     }
   }
 
 private:
   LocationSource *location_source_;
   std::vector<Point2D<int>> fruit_locations_;
+  std::unique_ptr<FruitRenderer> renderer_;
 
   void remove_fruit(const Point2D<int> &point) {
     assert(fruit_at(point));

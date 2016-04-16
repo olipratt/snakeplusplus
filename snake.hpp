@@ -9,14 +9,16 @@
 #include <location_source.hpp>
 #include <fruit_manager.hpp>
 #include <window.hpp>
+#include <renderapi.hpp>
 
 
 class Snake {
 public:
   Snake(FruitManager *fruit_manager, LocationSource *location_source,
-        const Point2D<int> &pos, Direction dir)
+        const Point2D<int> &pos, Direction dir, RendererFactory *render_fact)
     : fruit_manager_{fruit_manager}, location_source_{location_source},
-      head_position_{pos}, direction_{dir}, last_moved_direction_{dir}
+      head_position_{pos}, direction_{dir}, last_moved_direction_{dir},
+      renderer_{render_fact->new_snake_renderer()}
       { location_source_->take(head_position_); }
 
   int length() const { return body_locations_.size() + 1; }
@@ -27,7 +29,7 @@ public:
   void move();
   void face(Direction dir);
 
-  void draw(Window *window) const;
+  void draw(Window *window);
 
 private:
   FruitManager *fruit_manager_;
@@ -36,6 +38,7 @@ private:
   Direction direction_;
   Direction last_moved_direction_;
   std::list<Point2D<int>> body_locations_;
+  std::unique_ptr<SnakeRenderer> renderer_;
 
   void grow_body();
   void shrink_tail();

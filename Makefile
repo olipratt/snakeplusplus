@@ -8,7 +8,8 @@ COMMON_OBJS = snake.cpp \
 
 SNAKE_OBJS = $(COMMON_OBJS) \
 			main.cpp \
-			main_loop.cpp
+			main_loop.cpp \
+			sdlrenderapi.cpp
 
 TEST_OBJS = $(COMMON_OBJS) \
 			unit_test_main.cpp \

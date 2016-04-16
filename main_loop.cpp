@@ -7,6 +7,7 @@
 
 #include <window.hpp>
 #include <snake_scene.hpp>
+#include <sdlrenderapi.hpp>
 
 
 //Screen dimension constants,
@@ -69,7 +70,9 @@ void main_loop()
   // The window we'll be rendering to.
   Window window {SCREEN_NAME, SCREEN_WIDTH, SCREEN_HEIGHT};
 
-  SnakeScene snake_scene {4, 4, 750};
+  SDLRendererFactory render_fact {};
+
+  SnakeScene snake_scene {4, 4, 750, &render_fact};
 
   int last_update_time = SDL_GetTicks();
   int this_update_time;

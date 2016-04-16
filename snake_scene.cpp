@@ -50,7 +50,7 @@ void SnakeScene::process_event_queue()
   }
 }
 
-void SnakeScene::draw(Window *window) const
+void SnakeScene::draw(Window *window)
 {
   // Clear the screen first.
   window->draw_filled_rect(0, 0, window->width(), window->height(),

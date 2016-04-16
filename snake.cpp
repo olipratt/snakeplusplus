@@ -75,19 +75,12 @@ void Snake::move_head()
   last_moved_direction_ = direction_;
 }
 
-void Snake::draw(Window *window) const
+void Snake::draw(Window *window)
 {
-  unsigned int segment_width = window->width() / location_source_->width();
-  unsigned int segment_height = window->height() / location_source_->height();
-  window->draw_filled_rect(head_position_.x() * segment_width,
-                           head_position_.y() * segment_height,
-                           segment_width, segment_height,
-                           0x3D, 0x41, 0x24, 0xFF);
-  for(const Point2D<int> &point : body_locations_)
-  {
-    window->draw_filled_rect(point.x() * segment_width,
-                             point.y() * segment_height,
-                             segment_width, segment_height,
-                             0x7A, 0x52, 0x48, 0xFF);
-  }
+  renderer_->draw(window,
+                  head_position_,
+                  body_locations_,
+                  direction_,
+                  location_source_->width(),
+                  location_source_->height());
 }

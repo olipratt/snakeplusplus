@@ -6,11 +6,13 @@
 #include <catch.hpp>
 
 #include <snake_scene.hpp>
+#include <dummyrenderapi.hpp>
 
 
 TEST_CASE( "Update a snake scene until it ends", "[scene]" )
 {
-  SnakeScene snake_scene {3, 3, 1000};
+  DummyRendererFactory renderer {};
+  SnakeScene snake_scene {3, 3, 1000, &renderer};
 
   SECTION( "Update in exact ticks-per-move increments" )
   {
@@ -52,7 +54,8 @@ TEST_CASE( "Update a snake scene until it ends", "[scene]" )
 
 TEST_CASE( "A scene can handle basic event input", "[scene]" )
 {
-  SnakeScene snake_scene {4, 3, 1000};
+  DummyRendererFactory renderer {};
+  SnakeScene snake_scene {4, 3, 1000, &renderer};
 
   snake_scene.queue_event(SceneEvent::down);
 

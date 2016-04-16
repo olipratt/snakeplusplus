@@ -17,16 +17,19 @@
 class SnakeScene: public Scene
 {
 public:
-  SnakeScene(unsigned int width, unsigned int height, int ticks_per_move) :
-    location_source_{width, height}, fruit_manager_{&location_source_},
-    snake_{&fruit_manager_, &location_source_, {0, 0}, Direction::right},
-    ticks_per_move_{ticks_per_move}
+  SnakeScene(unsigned int width, unsigned int height, int ticks_per_move,
+             RendererFactory *render_fact)
+    : location_source_{width, height},
+      fruit_manager_{&location_source_, render_fact},
+      snake_{&fruit_manager_, &location_source_, {0, 0}, Direction::right,
+             render_fact},
+      ticks_per_move_{ticks_per_move}
     { fruit_manager_.place_fruit({static_cast<int>(width / 2),
                                   static_cast<int>(height / 2)}); }
 
   void update(int elapsed_ticks);
   void queue_event(SceneEvent event) { event_queue_.push(event); }
-  void draw(Window *window) const;
+  void draw(Window *window);
 
 private:
   LocationSource location_source_;

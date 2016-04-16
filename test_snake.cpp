@@ -8,22 +8,27 @@
 #include <location_source.hpp>
 #include <fruit_manager.hpp>
 #include <snake.hpp>
+#include <dummyrenderapi.hpp>
 
 
 TEST_CASE( "Create a snake", "[snake]" )
 {
+  DummyRendererFactory renderer {};
   TestLocationSource location_source {3, 3};
-  FruitManager fruit_manager {&location_source};
-  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
+  FruitManager fruit_manager {&location_source, &renderer};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right,
+               &renderer};
 
   REQUIRE( snake.occupies({0, 0}) );
 }
 
 TEST_CASE( "Snake movements", "[snake]" )
 {
+  DummyRendererFactory renderer {};
   TestLocationSource location_source {3, 3};
-  FruitManager fruit_manager {&location_source};
-  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
+  FruitManager fruit_manager {&location_source, &renderer};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right,
+               &renderer};
 
   SECTION( "Basic movement" )
   {
@@ -73,9 +78,11 @@ TEST_CASE( "Snake movements", "[snake]" )
 
 TEST_CASE( "A snake shouldn't be able to go outside the grid", "[snake]" )
 {
+  DummyRendererFactory renderer {};
   TestLocationSource location_source {3, 3};
-  FruitManager fruit_manager {&location_source};
-  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
+  FruitManager fruit_manager {&location_source, &renderer};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right,
+               &renderer};
 
   SECTION( "A snake can't go outside the grid in the positive direction" )
   {
@@ -94,9 +101,11 @@ TEST_CASE( "A snake shouldn't be able to go outside the grid", "[snake]" )
 
 TEST_CASE( "A snake can grow as it moves", "[snake]" )
 {
+  DummyRendererFactory renderer {};
   TestLocationSource location_source {3, 3};
-  FruitManager fruit_manager {&location_source};
-  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
+  FruitManager fruit_manager {&location_source, &renderer};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right,
+               &renderer};
 
   fruit_manager.place_fruit({1, 0});
   location_source.add_location({1, 1});
@@ -183,9 +192,11 @@ TEST_CASE( "A snake can grow as it moves", "[snake]" )
 
 TEST_CASE( "A snake dies if it eats its own body", "[snake]" )
 {
+  DummyRendererFactory renderer {};
   TestLocationSource location_source {3, 3};
-  FruitManager fruit_manager {&location_source};
-  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
+  FruitManager fruit_manager {&location_source, &renderer};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right,
+               &renderer};
 
   fruit_manager.place_fruit({1, 0});
   location_source.add_location({2, 0});
@@ -245,9 +256,11 @@ TEST_CASE( "A snake dies if it eats its own body", "[snake]" )
 
 TEST_CASE( "An error is raised when there are no locations left", "[snake]" )
 {
+  DummyRendererFactory renderer {};
   TestLocationSource location_source {2, 2};
-  FruitManager fruit_manager {&location_source};
-  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right};
+  FruitManager fruit_manager {&location_source, &renderer};
+  Snake snake {&fruit_manager, &location_source, {0, 0}, Direction::right,
+               &renderer};
 
   fruit_manager.place_fruit({1, 0});
   location_source.add_location({1, 1});

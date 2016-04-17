@@ -19,10 +19,10 @@ SNAKE_OBJS = $(COMMON_OBJS) \
 			window.cpp
 
 TEST_OBJS = $(COMMON_OBJS) \
-			unit_test_main.cpp \
-			test_snake.cpp \
-			test_snake_scene.cpp \
-			test_scene_common.cpp
+			test/unit_test_main.cpp \
+			test/test_snake.cpp \
+			test/test_snake_scene.cpp \
+			test/test_scene_common.cpp
 
 #CC specifies which compiler we're using
 CC = g++
@@ -30,6 +30,7 @@ CC = g++
 #INCLUDE_PATHS specifies the additional include paths we'll need
 INCLUDE_PATHS = -I.
 SNAKE_INCLUDE_PATHS = $(INCLUDE_PATHS) -I$(SDLINC)
+TEST_INCLUDE_PATHS = $(INCLUDE_PATHS) -Itest
 
 #LIBRARY_PATHS specifies the additional library paths we'll need
 LIBRARY_PATHS =
@@ -55,7 +56,7 @@ snake : $(SNAKE_OBJS)
 	$(SNAKE_COMPILER_FLAGS)	$(SNAKE_LINKER_FLAGS) -o $(SNAKE_OBJ_NAME)
 
 unit_tests : $(TEST_OBJS)
-	$(CC) $(TEST_OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) \
+	$(CC) $(TEST_OBJS) $(TEST_INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) \
 	$(LINKER_FLAGS) -o $(TEST_OBJ_NAME)
 
 .DEFAULT_GOAL := snake

@@ -63,4 +63,3 @@ make unit_tests
 - I've started trying to make the Makefile OS agnostic, but it's not done.
 - Also try running on other OSs (also Android?)
 - Add an intro menu screen that you are returned to on game over.
-- Improve the makefile so it only re

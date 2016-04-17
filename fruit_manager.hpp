@@ -11,7 +11,6 @@
 
 #include <point2d.hpp>
 
-#include <window.hpp>
 #include <renderapi.hpp>
 
 

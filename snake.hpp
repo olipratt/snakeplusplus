@@ -8,7 +8,6 @@
 #include <direction.hpp>
 #include <location_source.hpp>
 #include <fruit_manager.hpp>
-#include <window.hpp>
 #include <renderapi.hpp>
 
 

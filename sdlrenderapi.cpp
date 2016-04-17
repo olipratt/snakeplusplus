@@ -8,6 +8,12 @@
 #include <sdlrenderapi.hpp>
 
 
+void SDLSceneRenderer::clear(Window *window)
+{
+  window->draw_filled_rect(0, 0, window->width(), window->height(),
+                           0x00, 0xFF, 0x00, 0xFF);
+}
+
 void SDLSnakeRenderer::draw(Window *window,
                             Point2D<int> head_location,
                             const std::list<Point2D<int>> &body_locations,

@@ -53,8 +53,7 @@ void SnakeScene::process_event_queue()
 void SnakeScene::draw(Window *window)
 {
   // Clear the screen first.
-  window->draw_filled_rect(0, 0, window->width(), window->height(),
-                           0x00, 0xFF, 0x00, 0xFF);
+  renderer_->clear(window);
 
   // Now draw the fruits.
   fruit_manager_.draw(window);

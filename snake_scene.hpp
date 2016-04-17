@@ -11,7 +11,7 @@
 #include <snake.hpp>
 #include <scene_event.hpp>
 #include <scene.hpp>
-#include <window.hpp>
+#include <renderapi.hpp>
 
 
 class SnakeScene: public Scene
@@ -23,7 +23,8 @@ public:
       fruit_manager_{&location_source_, render_fact},
       snake_{&fruit_manager_, &location_source_, {0, 0}, Direction::right,
              render_fact},
-      ticks_per_move_{ticks_per_move}
+      ticks_per_move_{ticks_per_move},
+      renderer_{render_fact->new_scene_renderer()}
     { fruit_manager_.place_fruit({static_cast<int>(width / 2),
                                   static_cast<int>(height / 2)}); }
 
@@ -38,6 +39,7 @@ private:
   std::queue<SceneEvent> event_queue_;
   int ticks_per_move_;
   int ticks_since_move_{0};
+  std::unique_ptr<SceneRenderer> renderer_;
 
   void process_event_queue();
   void process_ticks(int elapsed_ticks);

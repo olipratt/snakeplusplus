@@ -2,7 +2,7 @@
 #define SCENEHPPINCLUDED
 
 #include <scene_event.hpp>
-#include <window.hpp>
+#include <renderapi.hpp>
 
 class Scene {
 public:

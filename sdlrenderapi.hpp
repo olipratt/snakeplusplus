@@ -7,6 +7,13 @@
 #include <renderapi.hpp>
 
 
+
+class SDLSceneRenderer : public SceneRenderer
+{
+public:
+  void clear(Window *window);
+};
+
 class SDLSnakeRenderer : public SnakeRenderer
 {
 public:
@@ -30,6 +37,10 @@ public:
 class SDLRendererFactory : public RendererFactory
 {
 public:
+  std::unique_ptr<SceneRenderer> new_scene_renderer() {
+    return std::unique_ptr<SDLSceneRenderer> (new SDLSceneRenderer);
+  }
+
   std::unique_ptr<SnakeRenderer> new_snake_renderer() {
     return std::unique_ptr<SDLSnakeRenderer> (new SDLSnakeRenderer);
   }

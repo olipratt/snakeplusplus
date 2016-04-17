@@ -2,11 +2,18 @@
 #define RENDERAPIINCLUDED
 
 #include <memory>
+#include <list>
 
 #include <direction.hpp>
 #include <point2d.hpp>
-#include <window.hpp>
 
+class Window;
+
+class SceneRenderer
+{
+public:
+  virtual void clear(Window *window) = 0;
+};
 
 class SnakeRenderer
 {
@@ -31,6 +38,7 @@ public:
 class RendererFactory
 {
 public:
+  virtual std::unique_ptr<SceneRenderer> new_scene_renderer() =0;
   virtual std::unique_ptr<SnakeRenderer> new_snake_renderer() =0;
   virtual std::unique_ptr<FruitRenderer> new_fruit_renderer() =0;
 };

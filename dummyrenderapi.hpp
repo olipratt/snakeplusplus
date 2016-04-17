@@ -7,9 +7,17 @@
 
 #include <direction.hpp>
 #include <point2d.hpp>
-#include <window.hpp>
 #include <renderapi.hpp>
 
+
+class DummySceneRenderer : public SceneRenderer
+{
+public:
+  void clear(Window *window)
+  {
+    throw std::logic_error("Dummy clear should never be called");
+  }
+};
 
 class DummySnakeRenderer : public SnakeRenderer
 {
@@ -40,6 +48,10 @@ public:
 class DummyRendererFactory : public RendererFactory
 {
 public:
+  std::unique_ptr<SceneRenderer> new_scene_renderer() {
+    return std::unique_ptr<DummySceneRenderer> (new DummySceneRenderer);
+  }
+
   std::unique_ptr<SnakeRenderer> new_snake_renderer() {
     return std::unique_ptr<DummySnakeRenderer> (new DummySnakeRenderer);
   }

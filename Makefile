@@ -16,7 +16,8 @@ COMMON_OBJS := $(addprefix src/, $(COMMON_OBJS))
 SNAKE_OBJS := main/main.cpp \
 			main/main_loop.cpp \
 			graphics/sdl/sdlrenderapi.cpp \
-			graphics/sdl/window.cpp
+			graphics/sdl/window.cpp \
+			event/sdl/sdleventqueue.cpp
 SNAKE_OBJS := $(COMMON_OBJS) $(addprefix src/, $(SNAKE_OBJS))
 
 TEST_OBJS := unit_test_main.cpp \
@@ -32,7 +33,11 @@ CC = g++
 INCLUDE_PATHS := scene/base scene/snake scene/snake/actor geometry \
 				graphics/api event
 INCLUDE_PATHS := $(addprefix -Isrc/, $(INCLUDE_PATHS))
-SNAKE_INCLUDE_PATHS = $(INCLUDE_PATHS) -I$(SDLINC) -Isrc/main -Isrc/graphics/sdl
+
+SNAKE_INCLUDE_PATHS := main graphics/sdl event/sdl
+SNAKE_INCLUDE_PATHS := $(INCLUDE_PATHS) -I$(SDLINC) \
+					$(addprefix -Isrc/, $(SNAKE_INCLUDE_PATHS))
+
 TEST_INCLUDE_PATHS = $(INCLUDE_PATHS) -Itest -Isrc/graphics/dummy
 
 #LIBRARY_PATHS specifies the additional library paths we'll need

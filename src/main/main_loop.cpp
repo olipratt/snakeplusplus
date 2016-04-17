@@ -7,65 +7,19 @@
 
 #include <window.hpp>
 #include <snake_scene.hpp>
+#include <sdleventqueue.hpp>
 #include <sdlrenderapi.hpp>
 
 
-//Screen dimension constants,
+// Screen name and dimension constants.
 const char *SCREEN_NAME = "Snake";
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 
-class SceneEventQueue
-{
-public:
-  void poll();
-  bool empty() const { return event_queue_.empty(); }
-  bool quit() const { return quit_; }
-  SceneEvent front() const { return event_queue_.front(); }
-  void pop() { event_queue_.pop(); }
-
-private:
-  std::queue<SceneEvent> event_queue_{};
-  bool quit_{false};
-
-};
-
-
-void SceneEventQueue::poll()
-{
-  SDL_Event event;
-
-  while (SDL_PollEvent(&event) != 0)
-  {
-    if (event.type == SDL_QUIT)
-    {
-      quit_ = true;
-    }
-    else if( event.type == SDL_KEYDOWN )
-    {
-      switch( event.key.keysym.sym )
-      {
-        case SDLK_UP:
-          event_queue_.push(SceneEvent::up);
-          break;
-        case SDLK_DOWN:
-          event_queue_.push(SceneEvent::down);
-          break;
-        case SDLK_LEFT:
-          event_queue_.push(SceneEvent::left);
-          break;
-        case SDLK_RIGHT:
-          event_queue_.push(SceneEvent::right);
-          break;
-      }
-    }
-  }
-}
-
 void main_loop()
 {
-  SceneEventQueue event_queue;
+  SDLSceneEventQueue event_queue;
 
   // The window we'll be rendering to.
   Window window {SCREEN_NAME, SCREEN_WIDTH, SCREEN_HEIGHT};

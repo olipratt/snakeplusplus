@@ -1,3 +1,5 @@
+#ifndef SDLEVENTQUEUEHPPINCLUDED
+#define SDLEVENTQUEUEHPPINCLUDED
 #include <queue>
 
 #include <scene_event.hpp>
@@ -15,3 +17,5 @@ private:
   std::queue<SceneEvent> event_queue_{};
   bool quit_{false};
 };
+
+#endif
